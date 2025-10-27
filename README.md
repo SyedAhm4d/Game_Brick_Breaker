@@ -2,6 +2,8 @@
 
 A classic Brick Breaker (Breakout-style) game implemented in Python using Turtle graphics. Break colorful bricks with a bouncing ball while controlling a paddle to prevent the ball from falling.
 
+![Game Screenshot](image.png)
+
 ## Features
 - Paddle controlled with arrow keys
 - Ball physics with realistic collision detection
@@ -60,6 +62,7 @@ Portfolio_6_Brick_Breaker/
 ├── brick_break.mp3      # Sound effect for breaking bricks
 ├── start.mp3           # Game start sound
 ├── end.mp3             # Game over sound
+├── image.png           # Game screenshot
 ├── .gitignore          # Git ignore file
 └── README.md           # This file
 ```

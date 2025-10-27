@@ -55,7 +55,9 @@ class Breakout(Turtle):
         self.turtle_define()
         self.ball_define()
         self.boundary_define()
-
+        
+        self.writer=Turtle()
+        self.print_gamestart()
         self.sleep=0.01
 
         self.wall1=[]
@@ -70,8 +72,6 @@ class Breakout(Turtle):
         self.create_hearts()
 
         self.screen.update()
-
-        self.print_gamestart()
         self.start_game()
         self.screen.mainloop()
 
@@ -104,6 +104,7 @@ class Breakout(Turtle):
         self.ball.color('white')
         self.ball.shape('circle')
         self.ball.goto(0,-320)
+        self.sleep=0.01
 
     def create_hearts(self):
         for item in range(len(self.hearts_left)):
@@ -191,28 +192,19 @@ class Breakout(Turtle):
                 brick.hideturtle()
 
     def break_wall(self,items,item):
-        # item.hideturtle()
-        # items.pop(items.index(item))
-        # if items == self.wall1:
-        #     self.sleep = 0.001
-        # elif items == self.wall2:
-        #     self.sleep = 0.000001
-        # elif items == self.wall3:
-        #     self.sleep = 0
-        #
-        # if len(self.wall1) == len(self.wall2) == len(self.wall3) == len(self.wall4) == 0:
-        #     self.print_gamewin()
         for i,items in enumerate(self.walls):
             for item in items:
                 if abs(self.ball.ycor() - item.ycor()) < 40 and abs(self.ball.xcor() - item.xcor()) < item.shapesize()[1] * 10+10:
                     item.hideturtle()
                     items.pop(items.index(item))
                     if i==0:
-                        self.sleep=0.001
+                        self.sleep=0.01
                     elif i==1:
-                        self.sleep=0.000001
+                        self.sleep=0.001
                     elif i==2:
-                        self.sleep=0
+                        self.sleep=0.00001
+                    elif i==3:
+                        self.sleep=0.00000000000001
                     self.screen.update()
                     if len(self.wall1)==len(self.wall2)==len(self.wall3)==len(self.wall4)==0:
                         self.print_gamewin()
@@ -262,17 +254,19 @@ class Breakout(Turtle):
             self.goto(self.pos()[0] + STEP, self.pos()[1])
 
     def print_gamestart(self):
-        writer = Turtle()
+        writer = self.writer
         writer.color('white')
         writer.penup()
         font = 101
         self.space_pressed=False
         self.screen.onkey(self.start,'space')
-        while not self.space_pressed:
-            writer.write("Game Start!", align="center", font=('Arcade Normal',font, "bold"))
-            writer.goto(0,-100)
-            writer.write("Press Space to Start Game", align="center", font=('Arcade Normal', 10, "bold"))
-            writer.goto(0,0)
+        writer.hideturtle()
+        writer.write("Game Start!", align="center", font=('Arcade Normal',font, "bold"))
+        writer.goto(0,-100)
+        writer.write("Press Space to Start Game", align="center", font=('Arcade Normal', 10, "bold"))
+        writer.goto(0,0)
+        while not self.space_pressed: 
+            self.screen.update()
         writer.clear()
         writer.hideturtle()
 
@@ -285,12 +279,13 @@ class Breakout(Turtle):
         writer = Turtle()
         writer.color('white')
         writer.penup()
+        writer.hideturtle()
         font = 101
         threading.Thread(target=start_sound()).start()
         while font > 0:
             writer.clear()
             writer.write("Game Start!", align="center", font=('Arcade Normal', font, "bold"))
-            # self.screen.update()
+            self.screen.update()
             time.sleep(0.03)
             font -= 5
         writer.clear()
@@ -301,12 +296,14 @@ class Breakout(Turtle):
         writer.color('white')
         writer.penup()
         font=16
+        writer.hideturtle()
         play_sound('end.mp3')
         while font<100:
             writer.clear()
             writer.write("Game Over!", align="center", font=('Arcade Normal', font, "bold"))
             font+=5
             time.sleep(0.03)
+            self.screen.update()
         time.sleep(2)
         exit()
 
@@ -315,12 +312,14 @@ class Breakout(Turtle):
         writer.color('white')
         writer.penup()
         font = 16
+        writer.hideturtle()
         play_sound('start.mp3')
         while font < 100:
             writer.clear()
             writer.write("Game Won!", align="center", font=('Arcade Normal', font, "bold"))
             font += 5
             time.sleep(0.03)
+            self.screen.update()
         time.sleep(2)
         exit()
 
